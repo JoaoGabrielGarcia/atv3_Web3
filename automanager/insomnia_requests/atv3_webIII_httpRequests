@@ -1,0 +1,1293 @@
+type: collection.insomnia.rest/5.0
+name: atv3_webIII
+meta:
+  id: wrk_8a9e576ead2445b89cc028f455875e66
+  created: 1750982168251
+  modified: 1750982168251
+  description: ""
+collection:
+  - url: http://localhost:8080/usuarios
+    name: Todos os usuários
+    meta:
+      id: req_3d975012445e483ababdf67be08ebcc9
+      created: 1750982168261
+      modified: 1750983411076
+      isPrivate: false
+      description: ""
+      sortKey: -1750766496219
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/usuarios/1
+    name: Usuário específico
+    meta:
+      id: req_5bb892bd82bd49de82d363538c556ecd
+      created: 1750982168264
+      modified: 1751059654571
+      isPrivate: false
+      description: ""
+      sortKey: -1750766630068
+    method: GET
+    parameters:
+      - id: pair_5f3b330a0ed34b258f0bb095e51021b4
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: cliente@email.com.br
+      password: cli123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/usuarios
+    name: Cadastro de usuário
+    meta:
+      id: req_a034b7c2849f44e4981b24703ab00d65
+      created: 1750982168266
+      modified: 1751059690430
+      isPrivate: false
+      description: ""
+      sortKey: -1750766726046
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nome": "João Silva",
+          "nomeSocial": "João",
+          "email": "joao@email.com",
+          "perfis": ["CLIENTE"],
+          "telefones": [
+            {
+              "ddd": "11",
+              "numero": "987654321"
+            }
+          ],
+          "endereco": {
+            "estado": "São Paulo",
+            "cidade": "São Paulo",
+            "bairro": "Centro",
+            "rua": "Rua das Flores",
+            "numero": "123",
+            "codigoPostal": "01234-567"
+          },
+          "documentos": [
+            {
+              "tipo": "CPF",
+              "numero": "121212121212"
+            }
+          ],
+          "credenciais": [
+            {
+              "email": "joao@email.com",
+              "senha": "senha123",
+              "criacao": "2024-01-01T00:00:00.000Z",
+              "ultimoAcesso": "2024-01-01T00:00:00.000Z",
+              "inativo": false
+            }
+          ]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: cliente@email.com.br
+      password: cli123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/usuarios/5
+    name: Atualizar usuário
+    meta:
+      id: req_b9220960a4d84505b942b5cb7dad1d69
+      created: 1750982168269
+      modified: 1751059713434
+      isPrivate: false
+      description: ""
+      sortKey: -1750767261770
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        		"nome": "João Gabriel Oliveira Garcia",
+        		"nomeSocial": "Duponesss"
+        	}
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: cliente@email.com.br
+      password: cli123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/usuarios/5
+    name: Excluir usuário
+    meta:
+      id: req_da5e309080a2445d95c9c88f8c07439d
+      created: 1750982168272
+      modified: 1750988153307
+      isPrivate: false
+      description: ""
+      sortKey: -1750767407532
+    method: DELETE
+    parameters:
+      - id: pair_57efbd9b8b8a48269eefd7bd567e79ad
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/mercadorias
+    name: Todas as mercadorias
+    meta:
+      id: req_7f44c78f0c2f454faa3a4c390a1e2d7c
+      created: 1750986842407
+      modified: 1750986879531
+      isPrivate: false
+      description: ""
+      sortKey: -1749991265759.5
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: none
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/mercadorias/2
+    name: Mercadoria específica
+    meta:
+      id: req_eb74afce858a4d26b1e0ced099a15f58
+      created: 1750986913563
+      modified: 1750988192953
+      isPrivate: false
+      description: ""
+      sortKey: -1750766563143.5
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: none
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/servicos/2
+    name: Serviço específico
+    meta:
+      id: req_89e39a7c68f340519d9e40a8c9c68f18
+      created: 1750987052116
+      modified: 1750988196354
+      isPrivate: false
+      description: ""
+      sortKey: -1750766529681.25
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: none
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/servicos
+    name: Todos os serviços
+    meta:
+      id: req_6d29462bebde42c6aacb61d6217b61b7
+      created: 1750987088022
+      modified: 1750987093593
+      isPrivate: false
+      description: ""
+      sortKey: -1749312939107.4375
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: none
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas
+    name: Todas as empresas
+    meta:
+      id: req_44c9916e81ea4398a3763bda150eb9d5
+      created: 1750987804725
+      modified: 1750988209205
+      isPrivate: false
+      description: ""
+      sortKey: -1750378880989.25
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/veiculos
+    name: Todas os veículos
+    meta:
+      id: req_29170e4b49ed42a1a4f175ce3304a9c8
+      created: 1750987914615
+      modified: 1750989786133
+      isPrivate: false
+      description: ""
+      sortKey: -1750185073374.375
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas/1
+    name: Empresa específica
+    meta:
+      id: req_4c6fbc276c9d4e549386b534a4168895
+      created: 1750988015672
+      modified: 1751060351294
+      isPrivate: false
+      description: ""
+      sortKey: -1750766596605.75
+    method: GET
+    parameters:
+      - id: pair_5f3b330a0ed34b258f0bb095e51021b4
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas
+    name: Cadastro de empresa
+    meta:
+      id: req_0d7cdfc23e9f4821929350cb8139cab5
+      created: 1750988073831
+      modified: 1751060273455
+      isPrivate: false
+      description: ""
+      sortKey: -1750766678057
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "razaoSocial": "Auto Center São José Ltda",
+          "nomeFantasia": "Auto Center SJ",
+          "cadastro": "2024-07-01T00:00:00.000Z",
+          "telefones": [
+            { "ddd": "12", "numero": "39451234" }
+          ],
+          "emails": [
+            { "email": "contato@autocentersj.com.br" }
+          ],
+          "endereco": {
+            "estado": "São Paulo",
+            "cidade": "São José dos Campos",
+            "bairro": "Centro",
+            "rua": "Av. 9 de Julho",
+            "numero": "1000",
+            "codigoPostal": "12211-000",
+            "informacoesAdicionais": "Próximo ao shopping"
+          },
+          "usuarios": [
+            {
+              "id": 1
+            }
+          ],
+          "mercadorias": [
+            {
+              "id": 1
+            }
+          ],
+          "servicos": [
+            {
+              "id": 1
+            }
+          ],
+          "vendas": [
+            {
+              "id": 1
+            }
+          ]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas/1
+    name: Atualizar empresa
+    meta:
+      id: req_87d72c49028a4aaabb1d040a5456cab4
+      created: 1750988102324
+      modified: 1750995341061
+      isPrivate: false
+      description: ""
+      sortKey: -1750766993908
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "razaoSocial": "Auto Center São José Ltda",
+          "nomeFantasia": "Auto Center SJC",
+          "emails": [
+            { "email": "contato@autocentersjc.com.br" }
+          ]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas/1
+    name: Excluir empresa
+    meta:
+      id: req_24f565f4105345429eca29c862940161
+      created: 1750988162312
+      modified: 1750988178666
+      isPrivate: false
+      description: ""
+      sortKey: -1750767334651
+    method: DELETE
+    parameters:
+      - id: pair_57efbd9b8b8a48269eefd7bd567e79ad
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/veiculos/1
+    name: Veículo específico
+    meta:
+      id: req_386cb46ae21d4a728ad82868a9e8ac3c
+      created: 1750988399937
+      modified: 1751041686075
+      isPrivate: false
+      description: ""
+      sortKey: -1750766579874.625
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/veiculos
+    name: Cadastro de veículo
+    meta:
+      id: req_77cf6605531d451baba9862cf7069c74
+      created: 1750988593020
+      modified: 1751043899536
+      isPrivate: false
+      description: ""
+      sortKey: -1750766654062.5
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "tipo": "SUV",
+          "modelo": "Corolla Cross",
+          "placa": "ABC-1234"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/veiculos/1
+    name: Atualizar veículo
+    meta:
+      id: req_bdc94b3c731b4864ba604de88163541d
+      created: 1750988833034
+      modified: 1750988848001
+      isPrivate: false
+      description: ""
+      sortKey: -1750766859977
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        		"nome": "João Gabriel Oliveira Garcia",
+        		"nomeSocial": "Duponesss"
+        	}
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/veiculos/1
+    name: Excluir veículo
+    meta:
+      id: req_393eccd440e349a8a436d74a2ba12978
+      created: 1750988856882
+      modified: 1750989286650
+      isPrivate: false
+      description: ""
+      sortKey: -1750767298210.5
+    method: DELETE
+    parameters:
+      - id: pair_57efbd9b8b8a48269eefd7bd567e79ad
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/mercadorias
+    name: Cadastro de mercadoria
+    meta:
+      id: req_5b9795c5f84342d2a002be12fad98cb9
+      created: 1750989309807
+      modified: 1751043936562
+      isPrivate: false
+      description: ""
+      sortKey: -1750766642065.25
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nome": "Óleo de Motor 5W30",
+          "quantidade": 50,
+          "valor": 45.0,
+          "descricao": "Óleo de motor sintético 5W30",
+          "validade": "2025-12-31T00:00:00.000Z",
+          "fabricacao": "2024-01-01T00:00:00.000Z",
+          "cadastro": "2024-01-01T00:00:00.000Z"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/mercadorias/1
+    name: Atualizar mercadoria
+    meta:
+      id: req_fb4b764524ea476d9df97e3eedc14184
+      created: 1750989374058
+      modified: 1750989382536
+      isPrivate: false
+      description: ""
+      sortKey: -1750766793011.5
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        		"nome": "João Gabriel Oliveira Garcia",
+        		"nomeSocial": "Duponesss"
+        	}
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/mercadorias/1
+    name: Excluir mercadoria
+    meta:
+      id: req_09b30bedd7404fb3a3534e2c483ff18f
+      created: 1750989391300
+      modified: 1750989398623
+      isPrivate: false
+      description: ""
+      sortKey: -1750767279990.25
+    method: DELETE
+    parameters:
+      - id: pair_57efbd9b8b8a48269eefd7bd567e79ad
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/servicos
+    name: Cadastro de serviço
+    meta:
+      id: req_fe779ce7b410431b9bcbd3b4cf410d85
+      created: 1750989854381
+      modified: 1751043975950
+      isPrivate: false
+      description: ""
+      sortKey: -1750766636066.625
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nome": "Troca de Óleo",
+          "valor": 80.0,
+          "descricao": "Troca de óleo do motor com filtro"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/servicos/1
+    name: Atualizar serviço
+    meta:
+      id: req_c87ee76090424d14921b1d4cdec0882c
+      created: 1750989915588
+      modified: 1750989953278
+      isPrivate: false
+      description: ""
+      sortKey: -1750766759528.75
+    method: PUT
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: none
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/servicos/1
+    name: Excluir serviço
+    meta:
+      id: req_507fc2979e21453d8e3eeb1c88990a1b
+      created: 1750989936699
+      modified: 1750989944398
+      isPrivate: false
+      description: ""
+      sortKey: -1750767270880.125
+    method: DELETE
+    parameters:
+      - id: pair_57efbd9b8b8a48269eefd7bd567e79ad
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/vendas
+    name: Todas as vendas
+    meta:
+      id: req_d98fc99508e64b86bf4ea0248ede7f96
+      created: 1750989984545
+      modified: 1751042814165
+      isPrivate: false
+      description: ""
+      sortKey: -1749264487203.7188
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/vendas/1
+    name: Venda específica
+    meta:
+      id: req_8f1b9e0e92904e76a0c4129561536567
+      created: 1750990000146
+      modified: 1751046232559
+      isPrivate: false
+      description: ""
+      sortKey: -1750766512950.125
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/vendas
+    name: Criar venda
+    meta:
+      id: req_e17e0be4e3374dee9b843f0af6147e86
+      created: 1750990030572
+      modified: 1751046932385
+      isPrivate: false
+      description: ""
+      sortKey: -1750766633067.3125
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "identificacao": "VDA-2024-002",
+          "cadastro": "2024-01-01T00:00:00.000Z",
+          "cliente": {
+            "id": 4
+          },
+          "funcionario": {
+            "id": 2
+          },
+          "veiculo": {
+            "id": 1
+          },
+          "empresa": {
+            "id": 1
+          },
+          "mercadorias": [
+            {
+              "id": 1
+            }
+          ],
+          "servicos": [
+            {
+              "id": 1
+            }
+          ]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/vendas/1
+    name: Atualizar venda
+    meta:
+      id: req_48674c5f49a54fbdbfcff47f1ca193b1
+      created: 1750990054301
+      modified: 1750990060054
+      isPrivate: false
+      description: ""
+      sortKey: -1750766742787.375
+    method: PUT
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: none
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/vendas/1
+    name: Excluir vendas
+    meta:
+      id: req_e18a2acfcc434fd09f366d2bcf75cab5
+      created: 1750991684012
+      modified: 1750991691702
+      isPrivate: false
+      description: ""
+      sortKey: -1750767266325.0625
+    method: DELETE
+    parameters:
+      - id: pair_57efbd9b8b8a48269eefd7bd567e79ad
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas/1/usuarios
+    name: Vincular usuário à empresa
+    meta:
+      id: req_7a90a2ed03e741559d8fb1de771d4d0f
+      created: 1751047643324
+      modified: 1751053513579
+      isPrivate: false
+      description: ""
+      sortKey: -1750766631567.6562
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "id": 2
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas/1/usuarios/1
+    name: Desvincular usuário de empresa
+    meta:
+      id: req_d3eb151c913f44868937f00790ba32be
+      created: 1751047767005
+      modified: 1751047792251
+      isPrivate: false
+      description: ""
+      sortKey: -1750767264047.5312
+    method: DELETE
+    parameters:
+      - id: pair_57efbd9b8b8a48269eefd7bd567e79ad
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas/1/mercadorias
+    name: Vincular mercadoria à empresa
+    meta:
+      id: req_37fd8bfeec2e459aa837613c773735a0
+      created: 1751047842167
+      modified: 1751047865765
+      isPrivate: false
+      description: ""
+      sortKey: -1750766630817.8281
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "id": 1
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas/1/mercadorias/1
+    name: Desvincular mercadoria de empresa
+    meta:
+      id: req_cb8333b8012242ac94439c990a7b5e4d
+      created: 1751047897078
+      modified: 1751047912665
+      isPrivate: false
+      description: ""
+      sortKey: -1750767262908.7656
+    method: DELETE
+    parameters:
+      - id: pair_57efbd9b8b8a48269eefd7bd567e79ad
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas/1/servicos
+    name: Vincular serviço à empresa
+    meta:
+      id: req_0cf7ea0967784750ad5770abfaf74c57
+      created: 1751047947601
+      modified: 1751047955066
+      isPrivate: false
+      description: ""
+      sortKey: -1750766630442.914
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "id": 1
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas/1/servicos/1
+    name: Desvincular servicos de empresa
+    meta:
+      id: req_c145d925440e490f81623225aaf153ba
+      created: 1751047987955
+      modified: 1751047997302
+      isPrivate: false
+      description: ""
+      sortKey: -1750767262339.3828
+    method: DELETE
+    parameters:
+      - id: pair_57efbd9b8b8a48269eefd7bd567e79ad
+        name: ""
+        value: ""
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/empresas/1/vendas
+    name: Vincular venda à empresa
+    meta:
+      id: req_aa158db21cc64819b8f9be99c893701b
+      created: 1751048157285
+      modified: 1751048167055
+      isPrivate: false
+      description: ""
+      sortKey: -1750766630255.457
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "id": 1
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_1abc8feee7354c20aceb9e6916b07a3d
+    created: 1750982168254
+    modified: 1751041663029
+  cookies:
+    - key: JSESSIONID
+      value: 455ACAFD7F71EA6143295B152C90D187
+      domain: localhost
+      path: /
+      httpOnly: true
+      hostOnly: true
+      creation: 2025-06-27T00:20:11.438Z
+      lastAccessed: 2025-06-27T16:27:43.028Z
+      id: 7abe7e76-3260-44e6-ab94-48a60390e667
+environments:
+  name: Base Environment
+  meta:
+    id: env_4472264f0db94f5c8f51ec5d25e66641
+    created: 1750982168252
+    modified: 1750982168252
+    isPrivate: false
