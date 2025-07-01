@@ -5,11 +5,14 @@ import com.autobots.automanager.entidades.CredencialUsuarioSenha;
 import com.autobots.automanager.entidades.Veiculo;
 import com.autobots.automanager.entidades.Mercadoria;
 import com.autobots.automanager.entidades.Venda;
+import com.autobots.automanager.entidades.Empresa;
 import com.autobots.automanager.repositorios.RepositorioUsuario;
 import com.autobots.automanager.repositorios.RepositorioVeiculo;
 import com.autobots.automanager.repositorios.RepositorioMercadoria;
 import com.autobots.automanager.repositorios.RepositorioVenda;
+import com.autobots.automanager.repositorios.RepositorioEmpresa;
 import com.autobots.automanager.enumeracoes.PerfilUsuario;
+import com.autobots.automanager.servico.HistoricoVendaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -39,6 +42,12 @@ public class UsuarioControle {
     
     @Autowired
     private RepositorioVenda repositorioVenda;
+    
+    @Autowired
+    private RepositorioEmpresa repositorioEmpresa;
+
+    @Autowired
+    private HistoricoVendaService historicoVendaService;
 
     @GetMapping
     public CollectionModel<EntityModel<Usuario>> listarUsuarios() {
@@ -99,6 +108,18 @@ public class UsuarioControle {
         if (senha == null || senha.isEmpty() || credEmail == null || credEmail.isEmpty() || !credEmail.equals(email)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+        
+        // Validar se empresa foi fornecida
+        if (usuario.getEmpresa() == null || usuario.getEmpresa().getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        
+        // Buscar e validar empresa
+        Optional<Empresa> empresaOpt = repositorioEmpresa.findById(usuario.getEmpresa().getId());
+        if (!empresaOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        usuario.setEmpresa(empresaOpt.get());
         
         if (usuario.getVeiculos() != null && !usuario.getVeiculos().isEmpty()) {
             Set<Veiculo> veiculosProcessados = new java.util.HashSet<>();
@@ -166,6 +187,17 @@ public class UsuarioControle {
             usuario.getCredenciais().addAll(atualizacao.getCredenciais());
         }
         
+        // Validar e processar empresa (obrigatório)
+        if (atualizacao.getEmpresa() == null || atualizacao.getEmpresa().getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        
+        Optional<Empresa> empresaOpt = repositorioEmpresa.findById(atualizacao.getEmpresa().getId());
+        if (!empresaOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        usuario.setEmpresa(empresaOpt.get());
+        
         if (atualizacao.getVeiculos() != null && !atualizacao.getVeiculos().isEmpty()) {
             Set<Veiculo> veiculosProcessados = new java.util.HashSet<>();
             for (Veiculo veiculo : atualizacao.getVeiculos()) {
@@ -217,6 +249,17 @@ public class UsuarioControle {
         if (!repositorioUsuario.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        
+        // Buscar o usuário para fazer backup histórico
+        Optional<Usuario> usuarioOpt = repositorioUsuario.findById(id);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            System.out.println("[DEBUG] Preparando backup histórico para usuário: " + usuario.getNome());
+            
+            // Fazer backup de todas as vendas relacionadas
+            historicoVendaService.prepararBackupUsuario(usuario);
+        }
+        
         repositorioUsuario.deleteById(id);
         return ResponseEntity.noContent().build();
     }

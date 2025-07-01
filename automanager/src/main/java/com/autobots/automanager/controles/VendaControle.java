@@ -90,83 +90,128 @@ public class VendaControle {
 
     @PostMapping
     public ResponseEntity<EntityModel<Venda>> criarVenda(@RequestBody Venda venda) {
-        // Processar cliente referenciado por ID
-        if (venda.getCliente() != null && venda.getCliente().getId() != null) {
-            Optional<Usuario> clienteOpt = repositorioUsuario.findById(venda.getCliente().getId());
-            if (clienteOpt.isPresent()) {
-                venda.setCliente(clienteOpt.get());
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        System.out.println("[DEBUG] Criando venda com identificação: " + venda.getIdentificacao());
+        
+        // Verificar se já existe uma venda com a mesma identificação
+        if (venda.getIdentificacao() != null) {
+            Optional<Venda> vendaExistente = repositorioVenda.findByIdentificacao(venda.getIdentificacao());
+            if (vendaExistente.isPresent()) {
+                System.out.println("[DEBUG] Erro: já existe uma venda com a identificação: " + venda.getIdentificacao());
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
             }
         }
         
-        // Processar funcionário referenciado por ID
-        if (venda.getFuncionario() != null && venda.getFuncionario().getId() != null) {
-            Optional<Usuario> funcionarioOpt = repositorioUsuario.findById(venda.getFuncionario().getId());
-            if (funcionarioOpt.isPresent()) {
-                venda.setFuncionario(funcionarioOpt.get());
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            }
-        }
-        
-        // Processar veículo referenciado por ID
-        if (venda.getVeiculo() != null && venda.getVeiculo().getId() != null) {
-            Optional<Veiculo> veiculoOpt = repositorioVeiculo.findById(venda.getVeiculo().getId());
-            if (veiculoOpt.isPresent()) {
-                venda.setVeiculo(veiculoOpt.get());
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            }
-        }
-        
-        // Processar empresa referenciada por ID
+        // Validar se empresa foi fornecida
         if (venda.getEmpresa() != null && venda.getEmpresa().getId() != null) {
             Optional<Empresa> empresaOpt = repositorioEmpresa.findById(venda.getEmpresa().getId());
-            if (empresaOpt.isPresent()) {
-                venda.setEmpresa(empresaOpt.get());
-            } else {
+            if (!empresaOpt.isPresent()) {
+                System.out.println("[DEBUG] Erro: empresa com ID " + venda.getEmpresa().getId() + " não encontrada");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
+            venda.setEmpresa(empresaOpt.get());
         }
         
-        // Processar mercadorias referenciadas por ID
-        if (venda.getMercadorias() != null && !venda.getMercadorias().isEmpty()) {
-            Set<Mercadoria> mercadoriasProcessadas = new java.util.HashSet<>();
-            for (Mercadoria mercadoria : venda.getMercadorias()) {
-                if (mercadoria.getId() != null) {
-                    Optional<Mercadoria> mercadoriaOpt = repositorioMercadoria.findById(mercadoria.getId());
-                    if (mercadoriaOpt.isPresent()) {
-                        mercadoriasProcessadas.add(mercadoriaOpt.get());
-                    }
+        // Validar se cliente foi fornecido 
+        if (venda.getCliente() != null && venda.getCliente().getId() != null) {
+            Optional<Usuario> clienteOpt = repositorioUsuario.findById(venda.getCliente().getId());
+            if (!clienteOpt.isPresent()) {
+                System.out.println("[DEBUG] Erro: cliente com ID " + venda.getCliente().getId() + " não encontrado");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            venda.setCliente(clienteOpt.get());
+        }
+        
+        // Validar se funcionário foi fornecido 
+        if (venda.getFuncionario() != null && venda.getFuncionario().getId() != null) {
+            Optional<Usuario> funcionarioOpt = repositorioUsuario.findById(venda.getFuncionario().getId());
+            if (!funcionarioOpt.isPresent()) {
+                System.out.println("[DEBUG] Erro: funcionário com ID " + venda.getFuncionario().getId() + " não encontrado");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            venda.setFuncionario(funcionarioOpt.get());
+        }
+        
+        // Validar se pelo menos uma mercadoria OU um serviço foi fornecido
+        boolean temMercadorias = venda.getMercadorias() != null && !venda.getMercadorias().isEmpty();
+        boolean temServicos = venda.getServicos() != null && !venda.getServicos().isEmpty();
+        
+        if (!temMercadorias && !temServicos) {
+            System.out.println("[DEBUG] Erro: nenhuma mercadoria ou serviço fornecido");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        
+        try {
+            // Processar veículo referenciado por ID (opcional)
+            if (venda.getVeiculo() != null && venda.getVeiculo().getId() != null) {
+                Optional<Veiculo> veiculoOpt = repositorioVeiculo.findById(venda.getVeiculo().getId());
+                if (veiculoOpt.isPresent()) {
+                    venda.setVeiculo(veiculoOpt.get());
+                } else {
+                    System.out.println("[DEBUG] Erro: veículo com ID " + venda.getVeiculo().getId() + " não encontrado");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
                 }
             }
-            venda.setMercadorias(mercadoriasProcessadas);
-        }
-        
-        // Processar serviços referenciados por ID
-        if (venda.getServicos() != null && !venda.getServicos().isEmpty()) {
-            Set<Servico> servicosProcessados = new java.util.HashSet<>();
-            for (Servico servico : venda.getServicos()) {
-                if (servico.getId() != null) {
-                    Optional<Servico> servicoOpt = repositorioServico.findById(servico.getId());
-                    if (servicoOpt.isPresent()) {
-                        servicosProcessados.add(servicoOpt.get());
+            
+            // Processar mercadorias referenciadas por ID
+            if (temMercadorias) {
+                Set<Mercadoria> mercadoriasProcessadas = new java.util.HashSet<>();
+                for (Mercadoria mercadoria : venda.getMercadorias()) {
+                    if (mercadoria.getId() != null) {
+                        Optional<Mercadoria> mercadoriaOpt = repositorioMercadoria.findById(mercadoria.getId());
+                        if (mercadoriaOpt.isPresent()) {
+                            mercadoriasProcessadas.add(mercadoriaOpt.get());
+                        } else {
+                            System.out.println("[DEBUG] Erro: mercadoria com ID " + mercadoria.getId() + " não encontrada");
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                        }
                     }
                 }
+                venda.setMercadorias(mercadoriasProcessadas);
             }
-            venda.setServicos(servicosProcessados);
+            
+            // Processar serviços referenciados por ID
+            if (temServicos) {
+                Set<Servico> servicosProcessados = new java.util.HashSet<>();
+                for (Servico servico : venda.getServicos()) {
+                    if (servico.getId() != null) {
+                        Optional<Servico> servicoOpt = repositorioServico.findById(servico.getId());
+                        if (servicoOpt.isPresent()) {
+                            servicosProcessados.add(servicoOpt.get());
+                        } else {
+                            System.out.println("[DEBUG] Erro: serviço com ID " + servico.getId() + " não encontrado");
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                        }
+                    }
+                }
+                venda.setServicos(servicosProcessados);
+            }
+            
+            // === FAZER BACKUP AUTOMÁTICO DOS DADOS ===
+            venda.atualizarBackupCliente();
+            venda.atualizarBackupFuncionario();
+            venda.atualizarBackupVeiculo();
+            venda.atualizarBackupEmpresa();
+            venda.atualizarBackupMercadorias();
+            venda.atualizarBackupServicos();
+            System.out.println("[DEBUG] Backup preenchido: " + venda.getBackup());
+            
+            System.out.println("[DEBUG] Salvando venda...");
+            Venda salvo = repositorioVenda.save(venda);
+            System.out.println("[DEBUG] Venda salva com sucesso, ID: " + salvo.getId());
+            
+            EntityModel<Venda> resource = EntityModel.of(salvo);
+            resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(VendaControle.class).obterVenda(salvo.getId())).withSelfRel());
+            resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(VendaControle.class).listarVendas()).withRel("vendas"));
+            resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(VendaControle.class).atualizarVenda(salvo.getId(), salvo)).withRel("update"));
+            resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(VendaControle.class).deletarVenda(salvo.getId(), null)).withRel("delete"));
+            
+            return ResponseEntity.status(HttpStatus.CREATED).body(resource);
+            
+        } catch (Exception e) {
+            System.out.println("[DEBUG] Erro ao salvar venda: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        
-        Venda salvo = repositorioVenda.save(venda);
-        
-        EntityModel<Venda> resource = EntityModel.of(salvo);
-        resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(VendaControle.class).obterVenda(salvo.getId())).withSelfRel());
-        resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(VendaControle.class).listarVendas()).withRel("vendas"));
-        resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(VendaControle.class).atualizarVenda(salvo.getId(), salvo)).withRel("update"));
-        resource.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(VendaControle.class).deletarVenda(salvo.getId(), null)).withRel("delete"));
-        
-        return ResponseEntity.status(HttpStatus.CREATED).body(resource);
     }
 
     @PutMapping("/{id}")
@@ -180,46 +225,63 @@ public class VendaControle {
         if (atualizacao.getCadastro() != null) venda.setCadastro(atualizacao.getCadastro());
         if (atualizacao.getIdentificacao() != null) venda.setIdentificacao(atualizacao.getIdentificacao());
         
-        // Processar cliente referenciado por ID
+        // Validar se empresa foi fornecida 
+        if (atualizacao.getEmpresa() != null && atualizacao.getEmpresa().getId() != null) {
+            Optional<Empresa> empresaOpt = repositorioEmpresa.findById(atualizacao.getEmpresa().getId());
+            if (!empresaOpt.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            venda.setEmpresa(empresaOpt.get());
+        }
+        
+        // Validar se cliente foi fornecido 
         if (atualizacao.getCliente() != null && atualizacao.getCliente().getId() != null) {
             Optional<Usuario> clienteOpt = repositorioUsuario.findById(atualizacao.getCliente().getId());
-            if (clienteOpt.isPresent()) {
-                venda.setCliente(clienteOpt.get());
+            if (!clienteOpt.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
+            venda.setCliente(clienteOpt.get());
         }
         
-        // Processar funcionário referenciado por ID
+        // Validar se funcionário foi fornecido 
         if (atualizacao.getFuncionario() != null && atualizacao.getFuncionario().getId() != null) {
             Optional<Usuario> funcionarioOpt = repositorioUsuario.findById(atualizacao.getFuncionario().getId());
-            if (funcionarioOpt.isPresent()) {
-                venda.setFuncionario(funcionarioOpt.get());
+            if (!funcionarioOpt.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
+            venda.setFuncionario(funcionarioOpt.get());
         }
         
-        // Processar veículo referenciado por ID
+        // Validar se pelo menos uma mercadoria OU um serviço foi fornecido
+        boolean temMercadorias = atualizacao.getMercadorias() != null && !atualizacao.getMercadorias().isEmpty();
+        boolean temServicos = atualizacao.getServicos() != null && !atualizacao.getServicos().isEmpty();
+        
+        if (!temMercadorias && !temServicos) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        
+        // Processar veículo referenciado por ID (opcional)
         if (atualizacao.getVeiculo() != null && atualizacao.getVeiculo().getId() != null) {
             Optional<Veiculo> veiculoOpt = repositorioVeiculo.findById(atualizacao.getVeiculo().getId());
             if (veiculoOpt.isPresent()) {
                 venda.setVeiculo(veiculoOpt.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
-        }
-        
-        // Processar empresa referenciada por ID
-        if (atualizacao.getEmpresa() != null && atualizacao.getEmpresa().getId() != null) {
-            Optional<Empresa> empresaOpt = repositorioEmpresa.findById(atualizacao.getEmpresa().getId());
-            if (empresaOpt.isPresent()) {
-                venda.setEmpresa(empresaOpt.get());
-            }
+        } else {
+            venda.setVeiculo(null); // Remove veículo se não foi fornecido
         }
         
         // Processar mercadorias referenciadas por ID
-        if (atualizacao.getMercadorias() != null && !atualizacao.getMercadorias().isEmpty()) {
+        if (temMercadorias) {
             Set<Mercadoria> mercadoriasProcessadas = new java.util.HashSet<>();
             for (Mercadoria mercadoria : atualizacao.getMercadorias()) {
                 if (mercadoria.getId() != null) {
                     Optional<Mercadoria> mercadoriaOpt = repositorioMercadoria.findById(mercadoria.getId());
                     if (mercadoriaOpt.isPresent()) {
                         mercadoriasProcessadas.add(mercadoriaOpt.get());
+                    } else {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
                     }
                 }
             }
@@ -227,18 +289,28 @@ public class VendaControle {
         }
         
         // Processar serviços referenciados por ID
-        if (atualizacao.getServicos() != null && !atualizacao.getServicos().isEmpty()) {
+        if (temServicos) {
             Set<Servico> servicosProcessados = new java.util.HashSet<>();
             for (Servico servico : atualizacao.getServicos()) {
                 if (servico.getId() != null) {
                     Optional<Servico> servicoOpt = repositorioServico.findById(servico.getId());
                     if (servicoOpt.isPresent()) {
                         servicosProcessados.add(servicoOpt.get());
+                    } else {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
                     }
                 }
             }
             venda.setServicos(servicosProcessados);
         }
+
+        venda.atualizarBackupCliente();
+        venda.atualizarBackupFuncionario();
+        venda.atualizarBackupVeiculo();
+        venda.atualizarBackupEmpresa();
+        venda.atualizarBackupMercadorias();
+        venda.atualizarBackupServicos();
+        System.out.println("[DEBUG] Backup preenchido: " + venda.getBackup());
 
         Venda salvo = repositorioVenda.save(venda);
         

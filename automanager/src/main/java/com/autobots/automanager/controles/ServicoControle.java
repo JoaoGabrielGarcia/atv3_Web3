@@ -1,7 +1,10 @@
 package com.autobots.automanager.controles;
 
 import com.autobots.automanager.entidades.Servico;
+import com.autobots.automanager.entidades.Empresa;
 import com.autobots.automanager.repositorios.RepositorioServico;
+import com.autobots.automanager.repositorios.RepositorioEmpresa;
+import com.autobots.automanager.servico.HistoricoVendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -19,6 +22,12 @@ import java.util.stream.Collectors;
 public class ServicoControle {
     @Autowired
     private RepositorioServico repositorioServico;
+    
+    @Autowired
+    private RepositorioEmpresa repositorioEmpresa;
+
+    @Autowired
+    private HistoricoVendaService historicoVendaService;
 
     @GetMapping
     public CollectionModel<EntityModel<Servico>> listarServicos() {
@@ -59,6 +68,18 @@ public class ServicoControle {
 
     @PostMapping
     public ResponseEntity<EntityModel<Servico>> criarServico(@RequestBody Servico servico) {
+        // Validar se empresa foi fornecida
+        if (servico.getEmpresa() == null || servico.getEmpresa().getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        
+        // Buscar e validar empresa
+        Optional<Empresa> empresaOpt = repositorioEmpresa.findById(servico.getEmpresa().getId());
+        if (!empresaOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        servico.setEmpresa(empresaOpt.get());
+        
         Servico salvo = repositorioServico.save(servico);
         
         EntityModel<Servico> resource = EntityModel.of(salvo);
@@ -81,6 +102,17 @@ public class ServicoControle {
         if (atualizacao.getNome() != null) servico.setNome(atualizacao.getNome());
         if (atualizacao.getValor() > 0) servico.setValor(atualizacao.getValor());
         if (atualizacao.getDescricao() != null) servico.setDescricao(atualizacao.getDescricao());
+        
+        // Validar e processar empresa (obrigatório)
+        if (atualizacao.getEmpresa() == null || atualizacao.getEmpresa().getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        
+        Optional<Empresa> empresaOpt = repositorioEmpresa.findById(atualizacao.getEmpresa().getId());
+        if (!empresaOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        servico.setEmpresa(empresaOpt.get());
 
         Servico salvo = repositorioServico.save(servico);
         
@@ -99,6 +131,17 @@ public class ServicoControle {
         if (!repositorioServico.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        
+        // Buscar o serviço para fazer backup histórico
+        Optional<Servico> servicoOpt = repositorioServico.findById(id);
+        if (servicoOpt.isPresent()) {
+            Servico servico = servicoOpt.get();
+            System.out.println("[DEBUG] Preparando backup histórico para serviço: " + servico.getNome());
+            
+            // Fazer backup de todas as vendas relacionadas
+            historicoVendaService.prepararBackupServico(servico);
+        }
+        
         repositorioServico.deleteById(id);
         return ResponseEntity.noContent().build();
     }

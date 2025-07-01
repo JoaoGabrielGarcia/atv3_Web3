@@ -1,7 +1,10 @@
 package com.autobots.automanager.controles;
 
 import com.autobots.automanager.entidades.Veiculo;
+import com.autobots.automanager.entidades.Empresa;
 import com.autobots.automanager.repositorios.RepositorioVeiculo;
+import com.autobots.automanager.repositorios.RepositorioEmpresa;
+import com.autobots.automanager.servico.HistoricoVendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -19,6 +22,12 @@ import java.util.stream.Collectors;
 public class VeiculoControle {
     @Autowired
     private RepositorioVeiculo repositorioVeiculo;
+    
+    @Autowired
+    private RepositorioEmpresa repositorioEmpresa;
+
+    @Autowired
+    private HistoricoVendaService historicoVendaService;
 
     @GetMapping
     public CollectionModel<EntityModel<Veiculo>> listarVeiculos() {
@@ -59,6 +68,18 @@ public class VeiculoControle {
 
     @PostMapping
     public ResponseEntity<EntityModel<Veiculo>> criarVeiculo(@RequestBody Veiculo veiculo) {
+        // Validar se empresa foi fornecida
+        if (veiculo.getEmpresa() == null || veiculo.getEmpresa().getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        
+        // Buscar e validar empresa
+        Optional<Empresa> empresaOpt = repositorioEmpresa.findById(veiculo.getEmpresa().getId());
+        if (!empresaOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        veiculo.setEmpresa(empresaOpt.get());
+        
         Veiculo salvo = repositorioVeiculo.save(veiculo);
         
         EntityModel<Veiculo> resource = EntityModel.of(salvo);
@@ -81,6 +102,17 @@ public class VeiculoControle {
         if (atualizacao.getTipo() != null) veiculo.setTipo(atualizacao.getTipo());
         if (atualizacao.getModelo() != null) veiculo.setModelo(atualizacao.getModelo());
         if (atualizacao.getPlaca() != null) veiculo.setPlaca(atualizacao.getPlaca());
+        
+        // Validar e processar empresa (obrigatório)
+        if (atualizacao.getEmpresa() == null || atualizacao.getEmpresa().getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        
+        Optional<Empresa> empresaOpt = repositorioEmpresa.findById(atualizacao.getEmpresa().getId());
+        if (!empresaOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        veiculo.setEmpresa(empresaOpt.get());
 
         Veiculo salvo = repositorioVeiculo.save(veiculo);
         
@@ -99,6 +131,17 @@ public class VeiculoControle {
         if (!repositorioVeiculo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        
+        // Buscar o veículo para fazer backup histórico
+        Optional<Veiculo> veiculoOpt = repositorioVeiculo.findById(id);
+        if (veiculoOpt.isPresent()) {
+            Veiculo veiculo = veiculoOpt.get();
+            System.out.println("[DEBUG] Preparando backup histórico para veículo: " + veiculo.getModelo());
+            
+            // Fazer backup de todas as vendas relacionadas
+            historicoVendaService.prepararBackupVeiculo(veiculo);
+        }
+        
         repositorioVeiculo.deleteById(id);
         return ResponseEntity.noContent().build();
     }

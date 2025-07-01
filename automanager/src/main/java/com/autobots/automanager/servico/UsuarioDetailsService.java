@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.hibernate.Hibernate;
 
 @Service
 public class UsuarioDetailsService implements UserDetailsService {
@@ -15,9 +16,8 @@ public class UsuarioDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return repositorioUsuario.findAll().stream()
-                .filter(u -> u.getEmail().equalsIgnoreCase(email))
-                .findFirst()
+        Usuario usuario = repositorioUsuario.findWithCredenciaisByEmailIgnoreCase(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + email));
+        return usuario;
     }
 } 

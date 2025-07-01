@@ -18,14 +18,16 @@ import jakarta.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(exclude = { "vendas" })
+@EqualsAndHashCode(exclude = { "usuarios", "mercadorias", "servicos", "vendas", "veiculos" })
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Empresa {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,17 +45,20 @@ public class Empresa {
 	@Column(nullable = false)
 	private Date cadastro;
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "empresa")
 	private Set<Usuario> usuarios = new HashSet<>();
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "empresa")
 	private Set<Mercadoria> mercadorias = new HashSet<>();
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "empresa")
 	private Set<Servico> servicos = new HashSet<>();
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "empresa")
 	private Set<Venda> vendas = new HashSet<>();
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "empresa")
+	private Set<Veiculo> veiculos = new HashSet<>();
 
 	// === MÉTODOS DE SERIALIZAÇÃO ===
 

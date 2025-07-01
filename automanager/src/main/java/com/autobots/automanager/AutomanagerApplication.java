@@ -66,12 +66,40 @@ public class AutomanagerApplication {
 
 			System.out.println("=== CRIANDO DADOS DE INICIALIZAÇÃO ===");
 
+			// Criar Empresa 
+			Empresa empresa = new Empresa();
+			empresa.setRazaoSocial("Auto Center São José Ltda");
+			empresa.setNomeFantasia("Auto Center SJ");
+			empresa.setCadastro(new Date());
+			
+			Telefone telefoneEmpresa = new Telefone();
+			telefoneEmpresa.setDdd("12");
+			telefoneEmpresa.setNumero("39451234");
+			empresa.getTelefones().add(telefoneEmpresa);
+			
+			Email emailEmpresa = new Email();
+			emailEmpresa.setEmail("contato@autocentersj.com.br");
+			empresa.getEmails().add(emailEmpresa);
+			
+			Endereco enderecoEmpresa = new Endereco();
+			enderecoEmpresa.setEstado("São Paulo");
+			enderecoEmpresa.setCidade("São José dos Campos");
+			enderecoEmpresa.setBairro("Centro");
+			enderecoEmpresa.setRua("Av. 9 de Julho");
+			enderecoEmpresa.setNumero("1000");
+			enderecoEmpresa.setCodigoPostal("12211-000");
+			enderecoEmpresa.setInformacoesAdicionais("Próximo ao shopping");
+			empresa.setEndereco(enderecoEmpresa);
+			
+			repositorioEmpresa.save(empresa);
+
 			// Criar Usuário Administrador
 			Usuario administrador = new Usuario();
 			administrador.setNome("João Silva");
 			administrador.setNomeSocial("João Admin");
 			administrador.setEmail("admin@carservice.com.br");
 			administrador.getPerfis().add(PerfilUsuario.ADMINISTRADOR);
+			administrador.setEmpresa(empresa);
 
 			CredencialUsuarioSenha credencialAdmin = new CredencialUsuarioSenha();
 			credencialAdmin.setInativo(false);
@@ -109,6 +137,7 @@ public class AutomanagerApplication {
 			funcionario.setNomeSocial("Pedro Funcionário");
 			funcionario.setEmail("funcionario@carservice.com.br");
 			funcionario.getPerfis().add(PerfilUsuario.FUNCIONARIO);
+			funcionario.setEmpresa(empresa);
 
 			CredencialUsuarioSenha credencialFunc = new CredencialUsuarioSenha();
 			credencialFunc.setInativo(false);
@@ -146,6 +175,7 @@ public class AutomanagerApplication {
 			fornecedor.setNomeSocial("Loja do Carro");
 			fornecedor.setEmail("fornecedor@lojadocarro.com.br");
 			fornecedor.getPerfis().add(PerfilUsuario.FORNECEDOR);
+			fornecedor.setEmpresa(empresa);
 
 			CredencialUsuarioSenha credencialFornecedor = new CredencialUsuarioSenha();
 			credencialFornecedor.setInativo(false);
@@ -183,6 +213,7 @@ public class AutomanagerApplication {
 			cliente.setNomeSocial("Maria Cliente");
 			cliente.setEmail("cliente@email.com.br");
 			cliente.getPerfis().add(PerfilUsuario.CLIENTE);
+			cliente.setEmpresa(empresa);
 
 			CredencialUsuarioSenha credencialCliente = new CredencialUsuarioSenha();
 			credencialCliente.setInativo(false);
@@ -223,6 +254,7 @@ public class AutomanagerApplication {
 			rodaLigaLeve.setQuantidade(30);
 			rodaLigaLeve.setValor(300.0);
 			rodaLigaLeve.setDescricao("Roda de liga leve original de fábrica da Toyota para modelos hatch");
+			rodaLigaLeve.setEmpresa(empresa);
 			repositorioMercadoria.save(rodaLigaLeve);
 
 			Mercadoria oleoMotor = new Mercadoria();
@@ -233,6 +265,7 @@ public class AutomanagerApplication {
 			oleoMotor.setQuantidade(50);
 			oleoMotor.setValor(45.0);
 			oleoMotor.setDescricao("Óleo de motor sintético 5W30 para motores modernos");
+			oleoMotor.setEmpresa(empresa);
 			repositorioMercadoria.save(oleoMotor);
 
 			// Criar Serviços
@@ -240,18 +273,21 @@ public class AutomanagerApplication {
 			trocaRodas.setNome("Troca de Rodas");
 			trocaRodas.setValor(50.0);
 			trocaRodas.setDescricao("Troca das rodas do carro por novas");
+			trocaRodas.setEmpresa(empresa);
 			repositorioServico.save(trocaRodas);
 
 			Servico alinhamento = new Servico();
 			alinhamento.setNome("Alinhamento de Rodas");
 			alinhamento.setValor(80.0);
 			alinhamento.setDescricao("Alinhamento das rodas do carro");
+			alinhamento.setEmpresa(empresa);
 			repositorioServico.save(alinhamento);
 
 			Servico balanceamento = new Servico();
 			balanceamento.setNome("Balanceamento de Rodas");
 			balanceamento.setValor(60.0);
 			balanceamento.setDescricao("Balanceamento das rodas do carro");
+			balanceamento.setEmpresa(empresa);
 			repositorioServico.save(balanceamento);
 
 			// Criar Veículos
@@ -259,34 +295,8 @@ public class AutomanagerApplication {
 			civic.setTipo(TipoVeiculo.SEDAN);
 			civic.setModelo("Honda Civic");
 			civic.setPlaca("XYZ-5678");
+			civic.setEmpresa(empresa);
 			repositorioVeiculo.save(civic);
-
-			// Criar Empresa
-			Empresa empresa = new Empresa();
-			empresa.setRazaoSocial("Auto Center São José Ltda");
-			empresa.setNomeFantasia("Auto Center SJ");
-			empresa.setCadastro(new Date());
-			
-			Telefone telefoneEmpresa = new Telefone();
-			telefoneEmpresa.setDdd("12");
-			telefoneEmpresa.setNumero("39451234");
-			empresa.getTelefones().add(telefoneEmpresa);
-			
-			Email emailEmpresa = new Email();
-			emailEmpresa.setEmail("contato@autocentersj.com.br");
-			empresa.getEmails().add(emailEmpresa);
-			
-			Endereco enderecoEmpresa = new Endereco();
-			enderecoEmpresa.setEstado("São Paulo");
-			enderecoEmpresa.setCidade("São José dos Campos");
-			enderecoEmpresa.setBairro("Centro");
-			enderecoEmpresa.setRua("Av. 9 de Julho");
-			enderecoEmpresa.setNumero("1000");
-			enderecoEmpresa.setCodigoPostal("12211-000");
-			enderecoEmpresa.setInformacoesAdicionais("Próximo ao shopping");
-			empresa.setEndereco(enderecoEmpresa);
-			
-			repositorioEmpresa.save(empresa);
 
 			System.out.println("=== DADOS DE INICIALIZAÇÃO CRIADOS COM SUCESSO ===");
 			System.out.println("Usuários criados:");

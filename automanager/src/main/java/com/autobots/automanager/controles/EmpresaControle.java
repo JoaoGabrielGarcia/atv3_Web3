@@ -10,6 +10,7 @@ import com.autobots.automanager.repositorios.RepositorioUsuario;
 import com.autobots.automanager.repositorios.RepositorioMercadoria;
 import com.autobots.automanager.repositorios.RepositorioServico;
 import com.autobots.automanager.repositorios.RepositorioVenda;
+import com.autobots.automanager.servico.HistoricoVendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -40,6 +41,9 @@ public class EmpresaControle {
     
     @Autowired
     private RepositorioVenda repositorioVenda;
+
+    @Autowired
+    private HistoricoVendaService historicoVendaService;
 
     @GetMapping
     public CollectionModel<EntityModel<Empresa>> listarEmpresas() {
@@ -250,6 +254,17 @@ public class EmpresaControle {
         if (!repositorioEmpresa.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        
+        // Buscar a empresa para fazer backup histórico
+        Optional<Empresa> empresaOpt = repositorioEmpresa.findById(id);
+        if (empresaOpt.isPresent()) {
+            Empresa empresa = empresaOpt.get();
+            System.out.println("[DEBUG] Preparando backup histórico para empresa: " + empresa.getRazaoSocial());
+            
+            // Fazer backup de todas as vendas relacionadas
+            historicoVendaService.prepararBackupEmpresa(empresa);
+        }
+        
         repositorioEmpresa.deleteById(id);
         return ResponseEntity.noContent().build();
     }

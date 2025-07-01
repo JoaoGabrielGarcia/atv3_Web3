@@ -11,7 +11,7 @@ collection:
     meta:
       id: req_3d975012445e483ababdf67be08ebcc9
       created: 1750982168261
-      modified: 1750983411076
+      modified: 1751322311410
       isPrivate: false
       description: ""
       sortKey: -1750766496219
@@ -33,12 +33,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:8080/usuarios/1
+  - url: http://localhost:8080/usuarios/5
     name: Usuário específico
     meta:
       id: req_5bb892bd82bd49de82d363538c556ecd
       created: 1750982168264
-      modified: 1751059654571
+      modified: 1751323975649
       isPrivate: false
       description: ""
       sortKey: -1750766630068
@@ -71,7 +71,7 @@ collection:
     meta:
       id: req_a034b7c2849f44e4981b24703ab00d65
       created: 1750982168266
-      modified: 1751059690430
+      modified: 1751323386931
       isPrivate: false
       description: ""
       sortKey: -1750766726046
@@ -80,10 +80,10 @@ collection:
       mimeType: application/json
       text: |-
         {
-          "nome": "João Silva",
+          "nome": "João Pedro Silva",
           "nomeSocial": "João",
           "email": "joao@email.com",
-          "perfis": ["CLIENTE"],
+          "perfis": ["FUNCIONARIO"],
           "telefones": [
             {
               "ddd": "11",
@@ -101,18 +101,60 @@ collection:
           "documentos": [
             {
               "tipo": "CPF",
-              "numero": "121212121212"
+              "numero": "54545454544554"
             }
           ],
           "credenciais": [
             {
               "email": "joao@email.com",
-              "senha": "senha123",
-              "criacao": "2024-01-01T00:00:00.000Z",
-              "ultimoAcesso": "2024-01-01T00:00:00.000Z",
+              "senha": "senhas123",
+              "criacao": "2024-01-01",
+              "ultimoAcesso": "2024-01-01",
               "inativo": false
             }
-          ]
+          ],
+          "empresa": {
+            "id": 1
+          }
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    authentication:
+      type: basic
+      useISO88591: false
+      disabled: false
+      username: admin@carservice.com.br
+      password: admin123
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8080/usuarios/5
+    name: Atualizar usuário
+    meta:
+      id: req_b9220960a4d84505b942b5cb7dad1d69
+      created: 1750982168269
+      modified: 1751324135516
+      isPrivate: false
+      description: ""
+      sortKey: -1750767261770
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        		"nome": "João Gabriel Oliveira Garcia",
+        		"nomeSocial": "Duponesss",
+        	"empresa":{
+        		"id": 1
+        	}
         }
     headers:
       - name: Content-Type
@@ -133,48 +175,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:8080/usuarios/5
-    name: Atualizar usuário
-    meta:
-      id: req_b9220960a4d84505b942b5cb7dad1d69
-      created: 1750982168269
-      modified: 1751059713434
-      isPrivate: false
-      description: ""
-      sortKey: -1750767261770
-    method: PUT
-    body:
-      mimeType: application/json
-      text: |-
-        {
-        		"nome": "João Gabriel Oliveira Garcia",
-        		"nomeSocial": "Duponesss"
-        	}
-    headers:
-      - name: Content-Type
-        value: application/json
-      - name: User-Agent
-        value: insomnia/11.2.0
-    authentication:
-      type: basic
-      useISO88591: false
-      disabled: false
-      username: cliente@email.com.br
-      password: cli123
-    settings:
-      renderRequestBody: true
-      encodeUrl: true
-      followRedirects: global
-      cookies:
-        send: true
-        store: true
-      rebuildPath: true
-  - url: http://localhost:8080/usuarios/5
+  - url: http://localhost:8080/usuarios/4
     name: Excluir usuário
     meta:
       id: req_da5e309080a2445d95c9c88f8c07439d
       created: 1750982168272
-      modified: 1750988153307
+      modified: 1751333007079
       isPrivate: false
       description: ""
       sortKey: -1750767407532
@@ -299,7 +305,7 @@ collection:
     meta:
       id: req_44c9916e81ea4398a3763bda150eb9d5
       created: 1750987804725
-      modified: 1750988209205
+      modified: 1751280890078
       isPrivate: false
       description: ""
       sortKey: -1750378880989.25
@@ -311,8 +317,8 @@ collection:
       type: basic
       useISO88591: false
       disabled: false
-      username: admin@carservice.com.br
-      password: admin123
+      username: funcionario@carservice.com.br
+      password: func123
     settings:
       renderRequestBody: true
       encodeUrl: true
@@ -353,7 +359,7 @@ collection:
     meta:
       id: req_4c6fbc276c9d4e549386b534a4168895
       created: 1750988015672
-      modified: 1751060351294
+      modified: 1751332656172
       isPrivate: false
       description: ""
       sortKey: -1750766596605.75
@@ -525,12 +531,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:8080/veiculos/1
+  - url: http://localhost:8080/veiculos/2
     name: Veículo específico
     meta:
       id: req_386cb46ae21d4a728ad82868a9e8ac3c
       created: 1750988399937
-      modified: 1751041686075
+      modified: 1751328065156
       isPrivate: false
       description: ""
       sortKey: -1750766579874.625
@@ -557,7 +563,7 @@ collection:
     meta:
       id: req_77cf6605531d451baba9862cf7069c74
       created: 1750988593020
-      modified: 1751043899536
+      modified: 1751325354059
       isPrivate: false
       description: ""
       sortKey: -1750766654062.5
@@ -568,7 +574,10 @@ collection:
         {
           "tipo": "SUV",
           "modelo": "Corolla Cross",
-          "placa": "ABC-1234"
+          "placa": "ABC-1234",
+        	"empresa": {
+        		"id": 1
+        	}
         }
     headers:
       - name: Content-Type
@@ -594,18 +603,14 @@ collection:
     meta:
       id: req_bdc94b3c731b4864ba604de88163541d
       created: 1750988833034
-      modified: 1750988848001
+      modified: 1751328125641
       isPrivate: false
       description: ""
       sortKey: -1750766859977
     method: PUT
     body:
       mimeType: application/json
-      text: |-
-        {
-        		"nome": "João Gabriel Oliveira Garcia",
-        		"nomeSocial": "Duponesss"
-        	}
+      text: ""
     headers:
       - name: Content-Type
         value: application/json
@@ -630,7 +635,7 @@ collection:
     meta:
       id: req_393eccd440e349a8a436d74a2ba12978
       created: 1750988856882
-      modified: 1750989286650
+      modified: 1751330715574
       isPrivate: false
       description: ""
       sortKey: -1750767298210.5
@@ -663,7 +668,7 @@ collection:
     meta:
       id: req_5b9795c5f84342d2a002be12fad98cb9
       created: 1750989309807
-      modified: 1751043936562
+      modified: 1751325453550
       isPrivate: false
       description: ""
       sortKey: -1750766642065.25
@@ -675,10 +680,13 @@ collection:
           "nome": "Óleo de Motor 5W30",
           "quantidade": 50,
           "valor": 45.0,
-          "descricao": "Óleo de motor sintético 5W30",
-          "validade": "2025-12-31T00:00:00.000Z",
-          "fabricacao": "2024-01-01T00:00:00.000Z",
-          "cadastro": "2024-01-01T00:00:00.000Z"
+          "descricao": "Óleo de motor sintético 5W30 para motores modernos",
+          "validade": "2025-12-31",
+          "fabricacao": "2024-01-01",
+          "cadastro": "2024-01-01",
+          "empresa": {
+            "id": 1
+          }
         }
     headers:
       - name: Content-Type
@@ -704,18 +712,14 @@ collection:
     meta:
       id: req_fb4b764524ea476d9df97e3eedc14184
       created: 1750989374058
-      modified: 1750989382536
+      modified: 1751333066641
       isPrivate: false
       description: ""
       sortKey: -1750766793011.5
     method: PUT
     body:
       mimeType: application/json
-      text: |-
-        {
-        		"nome": "João Gabriel Oliveira Garcia",
-        		"nomeSocial": "Duponesss"
-        	}
+      text: ""
     headers:
       - name: Content-Type
         value: application/json
@@ -773,7 +777,7 @@ collection:
     meta:
       id: req_fe779ce7b410431b9bcbd3b4cf410d85
       created: 1750989854381
-      modified: 1751043975950
+      modified: 1751325474865
       isPrivate: false
       description: ""
       sortKey: -1750766636066.625
@@ -784,7 +788,10 @@ collection:
         {
           "nome": "Troca de Óleo",
           "valor": 80.0,
-          "descricao": "Troca de óleo do motor com filtro"
+          "descricao": "Troca completa de óleo e filtro",
+          "empresa": {
+            "id": 1
+          }
         }
     headers:
       - name: Content-Type
@@ -920,7 +927,7 @@ collection:
     meta:
       id: req_e17e0be4e3374dee9b843f0af6147e86
       created: 1750990030572
-      modified: 1751046932385
+      modified: 1751330189864
       isPrivate: false
       description: ""
       sortKey: -1750766633067.3125
@@ -929,8 +936,8 @@ collection:
       mimeType: application/json
       text: |-
         {
-          "identificacao": "VDA-2024-002",
-          "cadastro": "2024-01-01T00:00:00.000Z",
+          "identificacao": "VDA-2024-001",
+          "cadastro": "2024-01-01",
           "cliente": {
             "id": 4
           },
@@ -965,29 +972,6 @@ collection:
       disabled: false
       username: admin@carservice.com.br
       password: admin123
-    settings:
-      renderRequestBody: true
-      encodeUrl: true
-      followRedirects: global
-      cookies:
-        send: true
-        store: true
-      rebuildPath: true
-  - url: http://localhost:8080/vendas/1
-    name: Atualizar venda
-    meta:
-      id: req_48674c5f49a54fbdbfcff47f1ca193b1
-      created: 1750990054301
-      modified: 1750990060054
-      isPrivate: false
-      description: ""
-      sortKey: -1750766742787.375
-    method: PUT
-    headers:
-      - name: User-Agent
-        value: insomnia/11.2.0
-    authentication:
-      type: none
     settings:
       renderRequestBody: true
       encodeUrl: true
@@ -1064,12 +1048,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://localhost:8080/empresas/1/usuarios/1
+  - url: http://localhost:8080/empresas/1/usuarios/2
     name: Desvincular usuário de empresa
     meta:
       id: req_d3eb151c913f44868937f00790ba32be
       created: 1751047767005
-      modified: 1751047792251
+      modified: 1751281576164
       isPrivate: false
       description: ""
       sortKey: -1750767264047.5312
@@ -1273,17 +1257,17 @@ cookieJar:
   meta:
     id: jar_1abc8feee7354c20aceb9e6916b07a3d
     created: 1750982168254
-    modified: 1751041663029
+    modified: 1751320613948
   cookies:
     - key: JSESSIONID
-      value: 455ACAFD7F71EA6143295B152C90D187
+      value: F8621CF0120BE89AEE19E031533AE7CC
       domain: localhost
       path: /
       httpOnly: true
       hostOnly: true
       creation: 2025-06-27T00:20:11.438Z
-      lastAccessed: 2025-06-27T16:27:43.028Z
-      id: 7abe7e76-3260-44e6-ab94-48a60390e667
+      lastAccessed: 2025-06-30T21:56:53.947Z
+      id: 40ba8a01-ccbd-4e4f-8a07-4c3f8ccb2e32
 environments:
   name: Base Environment
   meta:

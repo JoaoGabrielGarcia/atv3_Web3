@@ -1,7 +1,10 @@
 package com.autobots.automanager.controles;
 
 import com.autobots.automanager.entidades.Mercadoria;
+import com.autobots.automanager.entidades.Empresa;
 import com.autobots.automanager.repositorios.RepositorioMercadoria;
+import com.autobots.automanager.repositorios.RepositorioEmpresa;
+import com.autobots.automanager.servico.HistoricoVendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -19,6 +22,12 @@ import java.util.stream.Collectors;
 public class MercadoriaControle {
     @Autowired
     private RepositorioMercadoria repositorioMercadoria;
+    
+    @Autowired
+    private RepositorioEmpresa repositorioEmpresa;
+
+    @Autowired
+    private HistoricoVendaService historicoVendaService;
 
     @GetMapping
     public CollectionModel<EntityModel<Mercadoria>> listarMercadorias() {
@@ -59,6 +68,18 @@ public class MercadoriaControle {
 
     @PostMapping
     public ResponseEntity<EntityModel<Mercadoria>> criarMercadoria(@RequestBody Mercadoria mercadoria) {
+        
+        // Validar se empresa foi fornecida
+        if (mercadoria.getEmpresa() == null || mercadoria.getEmpresa().getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        
+        // Buscar e validar empresa
+        Optional<Empresa> empresaOpt = repositorioEmpresa.findById(mercadoria.getEmpresa().getId());
+        if (!empresaOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        mercadoria.setEmpresa(empresaOpt.get());
         Mercadoria salvo = repositorioMercadoria.save(mercadoria);
         
         EntityModel<Mercadoria> resource = EntityModel.of(salvo);
@@ -85,6 +106,17 @@ public class MercadoriaControle {
         if (atualizacao.getQuantidade() > 0) mercadoria.setQuantidade(atualizacao.getQuantidade());
         if (atualizacao.getValor() > 0) mercadoria.setValor(atualizacao.getValor());
         if (atualizacao.getDescricao() != null) mercadoria.setDescricao(atualizacao.getDescricao());
+        
+        // Validar e processar empresa (obrigatório)
+        if (atualizacao.getEmpresa() == null || atualizacao.getEmpresa().getId() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        
+        Optional<Empresa> empresaOpt = repositorioEmpresa.findById(atualizacao.getEmpresa().getId());
+        if (!empresaOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        mercadoria.setEmpresa(empresaOpt.get());
 
         Mercadoria salvo = repositorioMercadoria.save(mercadoria);
         
@@ -103,6 +135,17 @@ public class MercadoriaControle {
         if (!repositorioMercadoria.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        
+        // Buscar a mercadoria para fazer backup histórico
+        Optional<Mercadoria> mercadoriaOpt = repositorioMercadoria.findById(id);
+        if (mercadoriaOpt.isPresent()) {
+            Mercadoria mercadoria = mercadoriaOpt.get();
+            System.out.println("[DEBUG] Preparando backup histórico para mercadoria: " + mercadoria.getNome());
+            
+            // Fazer backup de todas as vendas relacionadas
+            historicoVendaService.prepararBackupMercadoria(mercadoria);
+        }
+        
         repositorioMercadoria.deleteById(id);
         return ResponseEntity.noContent().build();
     }
